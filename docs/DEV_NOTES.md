@@ -80,3 +80,7 @@
 - `save_settings` now recreates the save directory if it was deleted.
 - Cleaned up a comment about the low-gravity zone.
 - Network tests close sockets to avoid resource warnings.
+
+## 2025-07-21
+- Added `WatsonPlayer` with a time-dash special attack.
+- Game now creates the player when a level starts so character selection matters.

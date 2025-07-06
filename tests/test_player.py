@@ -111,6 +111,20 @@ def test_gura_special_attack():
     pygame.quit()
 
 
+def test_watson_special_dash():
+    pygame.init()
+    pygame.display.set_mode((1, 1))
+    from hololive_coliseum.player import WatsonPlayer
+
+    player = WatsonPlayer(0, 0)
+    now = pygame.time.get_ticks()
+    player.velocity.x = 0
+    player.special_attack(now)
+    assert player.velocity.x != 0
+    assert player.mana < player.max_mana
+    pygame.quit()
+
+
 def test_player_lives_decrease():
     pygame.init()
     pygame.display.set_mode((1, 1))

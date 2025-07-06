@@ -104,6 +104,7 @@ synchronization or discovery of other hosts.
 ## Future Goals
 
 - Flesh out each Vtuber's unique abilities (see `DEV_PLAN_CHARACTERS.md`).
+  *Watson Amelia implemented.*
 - Expand map mechanics and integrate more gravity zones and hazards.
 - Improve network latency handling and implement rollback if possible.
 - Add proper sprites and sound effects once the gameplay loop is solid.

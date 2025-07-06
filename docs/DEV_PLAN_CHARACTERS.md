@@ -2,7 +2,7 @@
 
 Each Hololive member will gain a unique special ability. Planned concepts:
 
-- **Watson Amelia**: Time travel dash that slows opponents.
+- **Watson Amelia**: Time travel dash that slows opponents. *(Implemented)*
 - **Ninomae Ina'nis**: Tentacle grapple pulling enemies closer.
 - **Takanashi Kiara**: Fiery winged leap dealing damage on landing.
 - **Mori Calliope**: Soul scythe projectile that returns like a boomerang.

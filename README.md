@@ -66,8 +66,8 @@ Menu navigation now includes character, map, and chapter selection screens with
 placeholder icons generated at runtime. During offline multiplayer character
 selection a **"Press J to join"** prompt allows additional local players to join,
 and an **Add AI Player** option lets you fill extra slots with simple bots in
-either solo or multiplayer. Press **V** to use Gura's special trident attack
-during gameplay. Projectiles can be aimed with the mouse and the special attack
+either solo or multiplayer. Press **V** to use Gura's special trident attack or
+Watson's time-dash during gameplay. Projectiles can be aimed with the mouse and the special attack
 fires an exploding shot. Powerups periodically spawn to restore health or mana
 and a simple life counter and level timer are displayed. A revamped **Settings**
 menu features key and controller binding editors, volume adjustments,

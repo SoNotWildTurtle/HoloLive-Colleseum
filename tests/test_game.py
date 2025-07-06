@@ -48,3 +48,10 @@ def test_character_menu_has_ai_option(tmp_path, monkeypatch):
     from hololive_coliseum.game import Game
     game = Game()
     assert "Add AI Player" in game.character_menu_options
+
+
+def test_watson_in_character_list(tmp_path, monkeypatch):
+    monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
+    from hololive_coliseum.game import Game
+    game = Game()
+    assert "Watson Amelia" in game.characters

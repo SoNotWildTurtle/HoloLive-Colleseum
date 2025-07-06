@@ -206,6 +206,31 @@ class GuraPlayer(Player):
         return None
 
 
+class WatsonPlayer(Player):
+    """Watson Amelia with a time-dash special attack."""
+
+    def __init__(self, x: int, y: int, image_path: str | None = None) -> None:
+        super().__init__(x, y, image_path)
+        self.last_special = -SPECIAL_COOLDOWN
+        self.dashing = False
+        self.dash_end = 0
+
+    def special_attack(self, now: int):
+        if now - self.last_special >= SPECIAL_COOLDOWN and self.use_mana(15):
+            self.last_special = now
+            self.dashing = True
+            self.dash_end = now + 300
+            self.velocity.x = 15 * self.direction
+        return None
+
+    def update(self, ground_y: int, now: int | None = None) -> None:
+        if now is None:
+            now = pygame.time.get_ticks()
+        if self.dashing and now >= self.dash_end:
+            self.dashing = False
+        super().update(ground_y, now)
+
+
 class Enemy(Player):
     """Basic enemy NPC using the same mechanics as players."""
 

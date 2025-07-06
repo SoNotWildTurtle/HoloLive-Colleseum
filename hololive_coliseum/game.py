@@ -1,7 +1,7 @@
 import os
 import pygame
 
-from .player import Player, GuraPlayer
+from .player import Player, GuraPlayer, WatsonPlayer
 from .projectile import Projectile, ExplodingProjectile
 from .melee_attack import MeleeAttack
 from .gravity_zone import GravityZone
@@ -83,7 +83,7 @@ class Game:
         ]
         self.controller_options = list(self.key_options)
         self.rebind_action: str | None = None
-        self.characters = ["Gawr Gura"]
+        self.characters = ["Gawr Gura", "Watson Amelia"]
         self.maps = ["Default"]
         self.chapters = ["Chapter 1"]
         self.character_menu_options = self.characters + ["Add AI Player", "Continue"]
@@ -112,6 +112,7 @@ class Game:
 
         self.character_images = {
             'Gawr Gura': _load('Gawr_Gura_right.png'),
+            'Watson Amelia': _load('Watson_Amelia_right.png'),
         }
         self.map_images = {
             'Default': _load('map_default.png'),
@@ -122,21 +123,29 @@ class Game:
         self.title_font = pygame.font.SysFont(None, 64)
         self.menu_font = pygame.font.SysFont(None, 32)
 
-        # Simple stage with a single ground platform
+        # Stage setup
         self.ground_y = self.height - 50
-        player_image = os.path.join(image_dir, "Gawr_Gura_right.png")
-        self.player = GuraPlayer(100, self.ground_y - 60, player_image)
+        self.next_powerup_time = 0
+        self.level_start_time = 0
+        self.level_limit = 60  # seconds
+        self._setup_level()
+
+    def _setup_level(self) -> None:
+        """Initialize or reset gameplay objects based on the chosen character."""
+        image_dir = os.path.join(os.path.dirname(__file__), '..', 'Images')
+        if self.selected_character == 'Watson Amelia':
+            player_cls = WatsonPlayer
+            img = os.path.join(image_dir, 'Watson_Amelia_right.png')
+        else:
+            player_cls = GuraPlayer
+            img = os.path.join(image_dir, 'Gawr_Gura_right.png')
+        self.player = player_cls(100, self.ground_y - 60, img)
         self.all_sprites = pygame.sprite.Group(self.player)
         self.projectiles = pygame.sprite.Group()
         self.melee_attacks = pygame.sprite.Group()
         self.gravity_zones = pygame.sprite.Group()
         self.powerups = pygame.sprite.Group()
 
-        self.next_powerup_time = 0
-        self.level_start_time = 0
-        self.level_limit = 60  # seconds
-
-        # Example low-gravity zone in the middle of the stage
         zone_rect = pygame.Rect(self.width // 2 - 50, self.ground_y - 150, 100, 50)
         self.low_gravity_zone = GravityZone(zone_rect, 0.2)
         self.gravity_zones.add(self.low_gravity_zone)
@@ -388,10 +397,12 @@ class Game:
                                 self.selected_character = choice
                         elif self.state == "map":
                             self.selected_map = choice
+                            self._setup_level()
                             self.state = "playing"
                             self.level_start_time = pygame.time.get_ticks()
                         elif self.state == "chapter":
                             self.selected_chapter = choice
+                            self._setup_level()
                             self.state = "playing"
                             self.level_start_time = pygame.time.get_ticks()
                         elif self.state == "settings":
