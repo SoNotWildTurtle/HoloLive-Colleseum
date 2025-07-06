@@ -11,6 +11,8 @@ class Projectile(pygame.sprite.Sprite):
         self.image = pygame.Surface((10, 4))
         self.image.fill((255, 0, 0))
         self.rect = self.image.get_rect(center=(x, y))
+        if direction.length_squared() == 0:
+            direction = pygame.math.Vector2(1, 0)
         self.velocity = direction.normalize() * PROJECTILE_SPEED
 
     def update(self) -> None:

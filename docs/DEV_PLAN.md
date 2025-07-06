@@ -1,7 +1,7 @@
-# HoloLive Coliseum Development Plan
+# Hololive Coliseum Development Plan
 
 ## Project Overview
-HoloLive Coliseum is a platform fighting game inspired by Super Smash Brothers, featuring popular Hololive Vtubers as playable characters. The game will support single-player and multiplayer modes with both keyboard/mouse and console controller input.
+Hololive Coliseum is a platform fighting game inspired by Super Smash Brothers, featuring popular Hololive Vtubers as playable characters. The game will support single-player and multiplayer modes with both keyboard/mouse and console controller input.
 
 ## Goals
 - Create a functional prototype with placeholder sprites and minimal features.

@@ -1,4 +1,4 @@
-"""HoloLive Coliseum game package."""
+"""Hololive Coliseum game package."""
 
 __all__ = [
     "Game",

@@ -29,3 +29,17 @@ def test_melee_attack_lifetime():
         attack.update()
     # Should be killed after lifetime expires
     assert not attack.alive()
+
+
+def test_player_shoot_zero_vector(tmp_path, monkeypatch):
+    monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
+    pygame.init()
+    pygame.display.set_mode((1, 1))
+    from hololive_coliseum.player import Player
+
+    player = Player(0, 0)
+    player.last_shot = -1000
+    now = pygame.time.get_ticks()
+    proj = player.shoot(now, player.rect.center)
+    assert proj is not None
+    pygame.quit()

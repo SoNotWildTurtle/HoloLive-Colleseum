@@ -1,4 +1,4 @@
-# HoloLive Coliseum
+# Hololive Coliseum
 Prototype platform fighter featuring Hololive Vtubers.
 The repository goals are detailed in [docs/GOALS.md](docs/GOALS.md).
 

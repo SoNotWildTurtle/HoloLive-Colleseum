@@ -14,7 +14,7 @@ MENU_TEXT_COLOR = (255, 255, 255)  # white text
 
 
 class Game:
-    """Minimal game loop with a splash menu using pygame."""
+    """Main game class with menus, AI opponents, networking and settings."""
 
     def __init__(self, width: int = 800, height: int = 600):
         os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
@@ -54,7 +54,7 @@ class Game:
         }
         self.controller_bindings = self.settings.get("controller_bindings", default_controller)
         self.screen = pygame.display.set_mode((self.width, self.height))
-        pygame.display.set_caption("HoloLive Coliseum")
+        pygame.display.set_caption("Hololive Coliseum")
         self.clock = pygame.time.Clock()
         self.running = False
         self.state = "splash"  # splash -> main_menu -> mode -> solo_multi -> mp_type -> char -> map/chapter -> settings -> playing
@@ -159,7 +159,7 @@ class Game:
     def _draw_menu(self) -> None:
         """Render the splash menu screen."""
         self.screen.fill(MENU_BG_COLOR)
-        title = self.title_font.render("HoloLive Coliseum", True, MENU_TEXT_COLOR)
+        title = self.title_font.render("Hololive Coliseum", True, MENU_TEXT_COLOR)
         prompt = self.menu_font.render("Press any key to start", True, MENU_TEXT_COLOR)
         self.screen.blit(
             title, title.get_rect(center=(self.width // 2, self.height // 3))
