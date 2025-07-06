@@ -1,5 +1,5 @@
-# HoloLive-Colleseum
-IDK arena. Shoutout gawr gura
+# HoloLive Coliseum
+Prototype platform fighter featuring Hololive Vtubers.
 
 
 List of Required Assets
@@ -48,6 +48,5 @@ Audio Tracks
    python -m hololive_coliseum
    ```
 
-The current prototype displays a simple cyan/white splash menu before
-entering the placeholder game loop. Additional characters, maps, and gameplay
-features will be added over time.
+The current prototype includes a basic player with gravity and a cyan splash menu.
+Additional characters, maps, and gameplay features will be added over time.

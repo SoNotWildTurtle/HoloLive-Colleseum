@@ -29,7 +29,7 @@ HoloLive Coliseum is a platform fighting game inspired by Super Smash Brothers, 
 
 ## Development Steps
 1. **Engine Selection**
-   - Evaluate game engines (Godot, Unity, Unreal). Prefer an open-source option (Godot) for easier collaboration.
+   - For the initial prototype, we use Pygame to quickly iterate on mechanics.
 
 2. **Project Setup**
    - Initialize repository with engine project files.

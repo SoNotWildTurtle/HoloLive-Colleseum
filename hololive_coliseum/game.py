@@ -1,6 +1,8 @@
 import os
 import pygame
 
+from .player import Player
+
 
 MENU_BG_COLOR = (0, 255, 255)  # cyan background
 MENU_TEXT_COLOR = (255, 255, 255)  # white text
@@ -21,6 +23,11 @@ class Game:
         self.in_menu = True
         self.title_font = pygame.font.SysFont(None, 64)
         self.menu_font = pygame.font.SysFont(None, 32)
+
+        # Simple stage with a single ground platform
+        self.ground_y = self.height - 50
+        self.player = Player(100, self.ground_y - 60)
+        self.all_sprites = pygame.sprite.Group(self.player)
 
     def _draw_menu(self) -> None:
         """Render the splash menu screen."""
@@ -43,7 +50,17 @@ class Game:
             if self.in_menu:
                 self._draw_menu()
             else:
+                keys = pygame.key.get_pressed()
+                self.player.handle_input(keys)
+                self.player.update(self.ground_y)
+
                 self.screen.fill((0, 0, 0))
+                pygame.draw.rect(
+                    self.screen,
+                    (100, 100, 100),
+                    pygame.Rect(0, self.ground_y, self.width, self.height - self.ground_y),
+                )
+                self.all_sprites.draw(self.screen)
 
             pygame.display.flip()
             self.clock.tick(60)
