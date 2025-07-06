@@ -126,6 +126,7 @@ class Game:
         # Stage setup
         self.ground_y = self.height - 50
         self.next_powerup_time = 0
+        self.last_enemy_damage = 0
         self.level_start_time = 0
         self.level_limit = 60  # seconds
         self._setup_level()
@@ -270,6 +271,7 @@ class Game:
 
     def _handle_collisions(self) -> None:
         """Handle combat collisions between attacks and sprites."""
+        now = pygame.time.get_ticks()
         for proj in list(self.projectiles):
             hits = pygame.sprite.spritecollide(proj, self.enemies, False)
             if hits:
@@ -282,6 +284,12 @@ class Game:
                 for enemy in hits:
                     enemy.take_damage(15)
             attack.kill()
+        if (
+            pygame.sprite.spritecollideany(self.player, self.enemies)
+            and now - self.last_enemy_damage >= 500
+        ):
+            self.player.take_damage(10)
+            self.last_enemy_damage = now
 
     def run(self):
         """Start the main game loop."""

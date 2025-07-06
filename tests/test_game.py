@@ -74,9 +74,29 @@ def test_enemy_ai_moves_toward_player(tmp_path, monkeypatch):
     game = Game()
     game.ai_players = 1
     game._setup_level()
+    game.last_enemy_damage = -1000
     enemy = next(iter(game.enemies))
     start_x = enemy.rect.x
     now = pygame.time.get_ticks()
     enemy.handle_ai(game.player, now)
     enemy.update(game.ground_y, now)
     assert enemy.rect.x != start_x
+
+
+def test_enemy_collision_hurts_player(tmp_path, monkeypatch):
+    monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
+    import pygame
+    pygame.init()
+    pygame.display.set_mode((1, 1))
+    from hololive_coliseum.game import Game
+
+    game = Game()
+    game.ai_players = 1
+    game._setup_level()
+    game.last_enemy_damage = -1000
+    enemy = next(iter(game.enemies))
+    enemy.rect.center = game.player.rect.center
+    enemy.pos = pygame.math.Vector2(enemy.rect.topleft)
+    game._handle_collisions()
+    assert game.player.health < game.player.max_health
+    pygame.quit()

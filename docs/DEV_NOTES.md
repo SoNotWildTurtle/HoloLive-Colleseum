@@ -92,3 +92,7 @@
 ## 2025-07-23
 - Added projectile and melee collision detection so enemies take damage when hit.
 - Updated goals and development plan to mention combat collisions.
+
+## 2025-07-24
+- Enemies now deal contact damage to the player.
+- Updated goals and development plan accordingly.
