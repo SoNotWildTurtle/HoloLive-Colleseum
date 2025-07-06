@@ -268,6 +268,21 @@ class Game:
         )
         self.screen.blit(prompt, prompt.get_rect(center=(self.width // 2, self.height // 2)))
 
+    def _handle_collisions(self) -> None:
+        """Handle combat collisions between attacks and sprites."""
+        for proj in list(self.projectiles):
+            hits = pygame.sprite.spritecollide(proj, self.enemies, False)
+            if hits:
+                for enemy in hits:
+                    enemy.take_damage(10)
+                proj.kill()
+        for attack in list(self.melee_attacks):
+            hits = pygame.sprite.spritecollide(attack, self.enemies, False)
+            if hits:
+                for enemy in hits:
+                    enemy.take_damage(15)
+            attack.kill()
+
     def run(self):
         """Start the main game loop."""
         self.running = True
@@ -504,6 +519,7 @@ class Game:
                     enemy.update(self.ground_y, now)
                 self.projectiles.update()
                 self.melee_attacks.update()
+                self._handle_collisions()
                 self.powerups.update()
                 if now >= self.next_powerup_time:
                     x = self.width // 2

@@ -107,6 +107,8 @@ synchronization or discovery of other hosts.
   *Watson Amelia implemented.*
 - Expand map mechanics and integrate more gravity zones and hazards.
 - Add AI-controlled opponents that use the same `Player` base class.
+- Implement combat collisions so projectiles and melee attacks damage
+  enemies and the player.
 - Polish menus with clearer prompts and optional controller hints.
 - Continue adding tests for new mechanics as they appear.
 

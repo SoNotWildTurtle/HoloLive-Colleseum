@@ -88,3 +88,7 @@
 ## 2025-07-22
 - Extended goals list with short- and long-term sections.
 - AI players selected in the menu now spawn as enemies that pursue the player.
+
+## 2025-07-23
+- Added projectile and melee collision detection so enemies take damage when hit.
+- Updated goals and development plan to mention combat collisions.

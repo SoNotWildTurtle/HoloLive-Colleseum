@@ -43,3 +43,21 @@ def test_player_shoot_zero_vector(tmp_path, monkeypatch):
     proj = player.shoot(now, player.rect.center)
     assert proj is not None
     pygame.quit()
+
+
+def test_projectile_hits_enemy(tmp_path, monkeypatch):
+    monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
+    pygame.init()
+    pygame.display.set_mode((1, 1))
+    from hololive_coliseum.game import Game
+
+    game = Game()
+    game.ai_players = 1
+    game._setup_level()
+    enemy = next(iter(game.enemies))
+    proj = Projectile(enemy.rect.centerx, enemy.rect.centery, pygame.math.Vector2(0, 0))
+    game.projectiles.add(proj)
+    game.all_sprites.add(proj)
+    game._handle_collisions()
+    assert enemy.health < enemy.max_health
+    pygame.quit()

@@ -72,4 +72,5 @@ Hololive Coliseum is a platform fighting game inspired by Super Smash Brothers, 
 - Harden save loading against corrupt files and ensure volume controls work even when the audio mixer is unavailable.
 - Automatically recreate the `SavedGames` folder if it is deleted so settings save reliably.
 - Spawn AI players during matches with simple pursuit logic.
+- Detect collisions between attacks and enemies to apply damage during combat.
 
