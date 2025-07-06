@@ -48,5 +48,6 @@ Audio Tracks
    python -m hololive_coliseum
    ```
 
-The current prototype only opens a blank window using `pygame`. Additional
-characters, maps, and gameplay features will be added over time.
+The current prototype displays a simple cyan/white splash menu before
+entering the placeholder game loop. Additional characters, maps, and gameplay
+features will be added over time.
