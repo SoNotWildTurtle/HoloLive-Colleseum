@@ -36,3 +36,17 @@ Images (PNGs)
 ./Images/boss_left.png
 Audio Tracks
 ./sounds/collision.wav
+
+## Running the Prototype
+
+1. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Launch the game:
+   ```bash
+   python -m hololive_coliseum
+   ```
+
+The current prototype only opens a blank window using `pygame`. Additional
+characters, maps, and gameplay features will be added over time.
