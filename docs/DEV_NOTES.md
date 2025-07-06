@@ -84,3 +84,7 @@
 ## 2025-07-21
 - Added `WatsonPlayer` with a time-dash special attack.
 - Game now creates the player when a level starts so character selection matters.
+
+## 2025-07-22
+- Extended goals list with short- and long-term sections.
+- AI players selected in the menu now spawn as enemies that pursue the player.

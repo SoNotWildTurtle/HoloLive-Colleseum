@@ -1,7 +1,7 @@
 import os
 import pygame
 
-from .player import Player, GuraPlayer, WatsonPlayer
+from .player import Player, GuraPlayer, WatsonPlayer, Enemy
 from .projectile import Projectile, ExplodingProjectile
 from .melee_attack import MeleeAttack
 from .gravity_zone import GravityZone
@@ -145,6 +145,11 @@ class Game:
         self.melee_attacks = pygame.sprite.Group()
         self.gravity_zones = pygame.sprite.Group()
         self.powerups = pygame.sprite.Group()
+        self.enemies = pygame.sprite.Group()
+        for i in range(self.ai_players):
+            e = Enemy(300 + i * 60, self.ground_y - 60, os.path.join(image_dir, "enemy_right.png"))
+            self.enemies.add(e)
+            self.all_sprites.add(e)
 
         zone_rect = pygame.Rect(self.width // 2 - 50, self.ground_y - 150, 100, 50)
         self.low_gravity_zone = GravityZone(zone_rect, 0.2)
@@ -494,6 +499,9 @@ class Game:
                 else:
                     self.player.set_gravity_multiplier(1.0)
                 self.player.update(self.ground_y, now)
+                for enemy in self.enemies:
+                    enemy.handle_ai(self.player, now)
+                    enemy.update(self.ground_y, now)
                 self.projectiles.update()
                 self.melee_attacks.update()
                 self.powerups.update()

@@ -55,3 +55,28 @@ def test_watson_in_character_list(tmp_path, monkeypatch):
     from hololive_coliseum.game import Game
     game = Game()
     assert "Watson Amelia" in game.characters
+
+
+def test_ai_players_spawn(tmp_path, monkeypatch):
+    monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
+    from hololive_coliseum.game import Game
+    game = Game()
+    game.selected_character = "Gawr Gura"
+    game.ai_players = 2
+    game._setup_level()
+    assert len(game.enemies) == 2
+
+
+def test_enemy_ai_moves_toward_player(tmp_path, monkeypatch):
+    monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
+    from hololive_coliseum.game import Game
+    import pygame
+    game = Game()
+    game.ai_players = 1
+    game._setup_level()
+    enemy = next(iter(game.enemies))
+    start_x = enemy.rect.x
+    now = pygame.time.get_ticks()
+    enemy.handle_ai(game.player, now)
+    enemy.update(game.ground_y, now)
+    assert enemy.rect.x != start_x

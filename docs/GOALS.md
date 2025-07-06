@@ -101,13 +101,21 @@ Settings are loaded at startup and saved on exit through `save_manager`.  If
 online mode is chosen, `NetworkManager` handles packet exchange for state
 synchronization or discovery of other hosts.
 
-## Future Goals
+## Short-Term Goals
 
 - Flesh out each Vtuber's unique abilities (see `DEV_PLAN_CHARACTERS.md`).
   *Watson Amelia implemented.*
 - Expand map mechanics and integrate more gravity zones and hazards.
+- Add AI-controlled opponents that use the same `Player` base class.
+- Polish menus with clearer prompts and optional controller hints.
+- Continue adding tests for new mechanics as they appear.
+
+## Long-Term Goals
+
 - Improve network latency handling and implement rollback if possible.
 - Add proper sprites and sound effects once the gameplay loop is solid.
+- Introduce a full story mode with chapters and cutscenes.
+- Package the game for multiple platforms with configurable installers.
 - Handle corrupt save files gracefully and keep UI responsive even without audio support.
 - Ensure the save directory is recreated automatically if missing.
 

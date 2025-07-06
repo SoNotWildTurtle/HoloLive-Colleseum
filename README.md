@@ -65,8 +65,9 @@ Movement now uses acceleration and friction for smoother platforming.
 Menu navigation now includes character, map, and chapter selection screens with
 placeholder icons generated at runtime. During offline multiplayer character
 selection a **"Press J to join"** prompt allows additional local players to join,
-and an **Add AI Player** option lets you fill extra slots with simple bots in
-either solo or multiplayer. Press **V** to use Gura's special trident attack or
+ and an **Add AI Player** option lets you fill extra slots with simple bots in
+ either solo or multiplayer. Selected AI players now spawn as enemies that
+ chase the human player. Press **V** to use Gura's special trident attack or
 Watson's time-dash during gameplay. Projectiles can be aimed with the mouse and the special attack
 fires an exploding shot. Powerups periodically spawn to restore health or mana
 and a simple life counter and level timer are displayed. A revamped **Settings**
