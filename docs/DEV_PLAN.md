@@ -66,6 +66,7 @@ Hololive Coliseum is a platform fighting game inspired by Super Smash Brothers, 
 - Expand maps and experiment with more gravity zones.
 - Refine existing local multiplayer features.
 - Flesh out menu flow for starting a game, adding chapter selection for story mode and graphical previews for characters and maps.
+- Populate story mode with twenty chapter icons representing Gura's growth.
 - Prototype networking with a lightweight UDP manager. Extend it with broadcast
   discovery so clients can find local hosts automatically and add an online vs
   offline selection to the menus.

@@ -111,6 +111,7 @@ synchronization or discovery of other hosts.
   enemies, and enemies now harm the player on contact.
 - Polish menus with clearer prompts and optional controller hints.
 - Continue adding tests for new mechanics as they appear.
+- Design the "Growing Up" story mode with 20 chapter icons that load each level.
 
 ## Long-Term Goals
 

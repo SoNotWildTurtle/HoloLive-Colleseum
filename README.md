@@ -1,6 +1,7 @@
 # Hololive Coliseum
 Prototype platform fighter featuring Hololive Vtubers.
 The repository goals are detailed in [docs/GOALS.md](docs/GOALS.md).
+Story mode chapters are outlined in [docs/DEV_PLAN_STORY.md](docs/DEV_PLAN_STORY.md).
 
 
 ## Asset Placeholders
@@ -43,6 +44,25 @@ Images (PNGs)
 ./Images/boss_left.png
 ./Images/map_default.png
 ./Images/chapter1.png
+./Images/chapter2.png
+./Images/chapter3.png
+./Images/chapter4.png
+./Images/chapter5.png
+./Images/chapter6.png
+./Images/chapter7.png
+./Images/chapter8.png
+./Images/chapter9.png
+./Images/chapter10.png
+./Images/chapter11.png
+./Images/chapter12.png
+./Images/chapter13.png
+./Images/chapter14.png
+./Images/chapter15.png
+./Images/chapter16.png
+./Images/chapter17.png
+./Images/chapter18.png
+./Images/chapter19.png
+./Images/chapter20.png
 ```
 
 Audio Tracks
@@ -75,6 +95,11 @@ and a simple life counter and level timer are displayed. A revamped **Settings**
 menu features key and controller binding editors, volume adjustments,
 window-size toggling, and a save-wipe option so preferences persist across
 sessions.
+
+### Story Mode
+The single-player campaign follows Gura's growth from rookie idol to battle-tested hero.
+Twenty chapter icons appear in the chapter select menu, each representing a new location and challenge.
+Selecting an icon loads its corresponding map using the placeholder images listed above.
 Additional characters, maps, and features will be introduced over time.
 
 ### Networking Prototype

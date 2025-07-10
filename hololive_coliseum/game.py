@@ -85,7 +85,7 @@ class Game:
         self.rebind_action: str | None = None
         self.characters = ["Gawr Gura", "Watson Amelia"]
         self.maps = ["Default"]
-        self.chapters = ["Chapter 1"]
+        self.chapters = [f"Chapter {i}" for i in range(1, 21)]
         self.character_menu_options = self.characters + ["Add AI Player", "Continue"]
         self.human_players = 1
         self.ai_players = 0
@@ -118,7 +118,7 @@ class Game:
             'Default': _load('map_default.png'),
         }
         self.chapter_images = {
-            'Chapter 1': _load('chapter1.png'),
+            f'Chapter {i}': _load(f'chapter{i}.png') for i in range(1, 21)
         }
         self.title_font = pygame.font.SysFont(None, 64)
         self.menu_font = pygame.font.SysFont(None, 32)

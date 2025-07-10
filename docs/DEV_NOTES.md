@@ -96,3 +96,7 @@
 ## 2025-07-24
 - Enemies now deal contact damage to the player.
 - Updated goals and development plan accordingly.
+
+## 2025-07-25
+- Added a "Growing Up" storyline for single-player with twenty chapter icons.
+- Updated menus to list all chapters and load placeholder images.

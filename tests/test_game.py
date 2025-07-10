@@ -112,3 +112,12 @@ def test_enemy_collision_hurts_player(tmp_path, monkeypatch):
     game._handle_collisions()
     assert game.player.health < game.player.max_health
     pygame.quit()
+
+
+def test_chapter_list_has_20_entries(tmp_path, monkeypatch):
+    monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
+    from hololive_coliseum.game import Game
+
+    game = Game()
+    assert len(game.chapters) == 20
+    assert len(game.chapter_images) == 20
