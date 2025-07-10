@@ -67,6 +67,18 @@ def test_ai_players_spawn(tmp_path, monkeypatch):
     assert len(game.enemies) == 2
 
 
+def test_setup_level_resets_timers(tmp_path, monkeypatch):
+    monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
+    from hololive_coliseum.game import Game
+    game = Game()
+    game.next_powerup_time = 123
+    game.last_enemy_damage = 456
+    game.ai_players = 0
+    game._setup_level()
+    assert game.next_powerup_time == 0
+    assert game.last_enemy_damage == 0
+
+
 def test_enemy_ai_moves_toward_player(tmp_path, monkeypatch):
     monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
     from hololive_coliseum.game import Game

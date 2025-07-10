@@ -10,7 +10,7 @@ Directories
 - `SavedGames/`
 - `Images/`
 - `sounds/`
-The `SavedGames` folder stores settings in `settings.json`. Selecting "Wipe saves" from the settings menu clears this directory.
+The `SavedGames` folder stores settings in `settings.json`. Selecting "Wipe Saves" from the settings menu clears this directory.
 If the folder is missing, it will be recreated automatically the next time settings are saved.
 
 Images (PNGs)

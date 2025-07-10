@@ -147,6 +147,9 @@ class Game:
         self.gravity_zones = pygame.sprite.Group()
         self.powerups = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
+        # Reset timers when starting a new level
+        self.next_powerup_time = 0
+        self.last_enemy_damage = 0
         for i in range(self.ai_players):
             e = Enemy(300 + i * 60, self.ground_y - 60, os.path.join(image_dir, "enemy_right.png"))
             self.enemies.add(e)
