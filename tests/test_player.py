@@ -125,6 +125,28 @@ def test_watson_special_dash():
     pygame.quit()
 
 
+def test_ina_grapple_projectile(tmp_path, monkeypatch):
+    monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
+    pygame.init()
+    pygame.display.set_mode((1, 1))
+    from hololive_coliseum.game import Game
+
+    game = Game()
+    game.selected_character = "Ninomae Ina'nis"
+    game.ai_players = 1
+    game._setup_level()
+    enemy = next(iter(game.enemies))
+    now = pygame.time.get_ticks()
+    proj = game.player.special_attack(now)
+    assert proj is not None
+    proj.rect.center = enemy.rect.center
+    game.projectiles.add(proj)
+    game.all_sprites.add(proj)
+    game._handle_collisions()
+    assert enemy.rect.centerx == game.player.rect.centerx
+    pygame.quit()
+
+
 def test_player_lives_decrease():
     pygame.init()
     pygame.display.set_mode((1, 1))

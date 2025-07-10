@@ -57,6 +57,13 @@ def test_watson_in_character_list(tmp_path, monkeypatch):
     assert "Watson Amelia" in game.characters
 
 
+def test_ina_in_character_list(tmp_path, monkeypatch):
+    monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
+    from hololive_coliseum.game import Game
+    game = Game()
+    assert "Ninomae Ina'nis" in game.characters
+
+
 def test_ai_players_spawn(tmp_path, monkeypatch):
     monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
     from hololive_coliseum.game import Game

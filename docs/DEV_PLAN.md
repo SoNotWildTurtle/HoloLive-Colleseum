@@ -62,6 +62,7 @@ Hololive Coliseum is a platform fighting game inspired by Super Smash Brothers, 
 
 ## Next Steps
 - Continue refining player abilities and additional characters.
+- Add Ninomae Ina'nis with a grappling special attack.
 - Polish melee attack, blocking, and parry mechanics.
 - Expand maps and experiment with more gravity zones.
 - Refine existing local multiplayer features.

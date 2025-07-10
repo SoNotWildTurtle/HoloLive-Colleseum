@@ -100,3 +100,8 @@
 ## 2025-07-25
 - Added a "Growing Up" storyline for single-player with twenty chapter icons.
 - Updated menus to list all chapters and load placeholder images.
+
+## 2025-07-26
+- Introduced `InaPlayer` with a tentacle grapple special attack.
+- Character list now includes Ninomae Ina'nis and chapter menu supports her image.
+- Collision logic pulls enemies toward the player when grapple projectile hits.

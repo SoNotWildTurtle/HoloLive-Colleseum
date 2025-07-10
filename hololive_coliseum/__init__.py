@@ -5,9 +5,11 @@ __all__ = [
     "Player",
     "GuraPlayer",
     "WatsonPlayer",
+    "InaPlayer",
     "Enemy",
     "Projectile",
     "ExplodingProjectile",
+    "GrappleProjectile",
     "PowerUp",
     "physics",
     "GravityZone",
@@ -19,8 +21,8 @@ __all__ = [
 ]
 
 from .game import Game
-from .player import Player, GuraPlayer, WatsonPlayer, Enemy
-from .projectile import Projectile, ExplodingProjectile
+from .player import Player, GuraPlayer, WatsonPlayer, InaPlayer, Enemy
+from .projectile import Projectile, ExplodingProjectile, GrappleProjectile
 from .gravity_zone import GravityZone
 from .melee_attack import MeleeAttack
 from .powerup import PowerUp

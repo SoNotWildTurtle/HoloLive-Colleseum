@@ -31,3 +31,11 @@ class ExplodingProjectile(Projectile):
         self.timer -= 1
         if self.timer <= 0:
             self.kill()
+
+
+class GrappleProjectile(Projectile):
+    """Projectile that pulls enemies toward the shooter on contact."""
+
+    def __init__(self, x: int, y: int, direction: pygame.math.Vector2) -> None:
+        super().__init__(x, y, direction)
+        self.grapple = True

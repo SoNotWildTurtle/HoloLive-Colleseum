@@ -103,8 +103,9 @@ synchronization or discovery of other hosts.
 
 ## Short-Term Goals
 
-- Flesh out each Vtuber's unique abilities (see `DEV_PLAN_CHARACTERS.md`).
+ - Flesh out each Vtuber's unique abilities (see `DEV_PLAN_CHARACTERS.md`).
   *Watson Amelia implemented.*
+  *Ninomae Ina'nis implemented.*
 - Expand map mechanics and integrate more gravity zones and hazards.
 - Add AI-controlled opponents that use the same `Player` base class.
 - Implement combat collisions so projectiles and melee attacks damage

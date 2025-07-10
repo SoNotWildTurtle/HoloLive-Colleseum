@@ -231,6 +231,27 @@ class WatsonPlayer(Player):
         super().update(ground_y, now)
 
 
+class InaPlayer(Player):
+    """Ninomae Ina'nis with a tentacle grapple special attack."""
+
+    def __init__(self, x: int, y: int, image_path: str | None = None) -> None:
+        super().__init__(x, y, image_path)
+        self.last_special = -SPECIAL_COOLDOWN
+
+    def special_attack(self, now: int):
+        from .projectile import GrappleProjectile
+
+        if now - self.last_special >= SPECIAL_COOLDOWN and self.use_mana(15):
+            self.last_special = now
+            x = self.rect.centerx
+            y = self.rect.centery
+            direction = pygame.math.Vector2(self.direction, 0)
+            proj = GrappleProjectile(x, y, direction)
+            proj.image.fill((128, 0, 255))
+            return proj
+        return None
+
+
 class Enemy(Player):
     """Basic enemy NPC using the same mechanics as players."""
 

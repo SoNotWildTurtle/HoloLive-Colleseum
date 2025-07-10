@@ -88,8 +88,8 @@ selection a **"Press J to join"** prompt allows additional local players to join
  and an **Add AI Player** option lets you fill extra slots with simple bots in
  either solo or multiplayer. Selected AI players now spawn as enemies that
   chase the human player. Projectiles and melee attacks damage enemies on
-  contact, and enemies hurt the player when touching them. Press **V** to use Gura's special trident attack or
-Watson's time-dash during gameplay. Projectiles can be aimed with the mouse and the special attack
+   contact, and enemies hurt the player when touching them. Press **V** to use Gura's special trident attack,
+Watson's time-dash, or Ina's tentacle grapple during gameplay. Projectiles can be aimed with the mouse and the special attack
 fires an exploding shot. Powerups periodically spawn to restore health or mana
 and a simple life counter and level timer are displayed. A revamped **Settings**
 menu features key and controller binding editors, volume adjustments,

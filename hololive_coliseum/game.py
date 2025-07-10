@@ -1,7 +1,7 @@
 import os
 import pygame
 
-from .player import Player, GuraPlayer, WatsonPlayer, Enemy
+from .player import Player, GuraPlayer, WatsonPlayer, InaPlayer, Enemy
 from .projectile import Projectile, ExplodingProjectile
 from .melee_attack import MeleeAttack
 from .gravity_zone import GravityZone
@@ -83,7 +83,7 @@ class Game:
         ]
         self.controller_options = list(self.key_options)
         self.rebind_action: str | None = None
-        self.characters = ["Gawr Gura", "Watson Amelia"]
+        self.characters = ["Gawr Gura", "Watson Amelia", "Ninomae Ina'nis"]
         self.maps = ["Default"]
         self.chapters = [f"Chapter {i}" for i in range(1, 21)]
         self.character_menu_options = self.characters + ["Add AI Player", "Continue"]
@@ -113,6 +113,7 @@ class Game:
         self.character_images = {
             'Gawr Gura': _load('Gawr_Gura_right.png'),
             'Watson Amelia': _load('Watson_Amelia_right.png'),
+            "Ninomae Ina'nis": _load('Ninomae_Inanis_right.png'),
         }
         self.map_images = {
             'Default': _load('map_default.png'),
@@ -137,6 +138,9 @@ class Game:
         if self.selected_character == 'Watson Amelia':
             player_cls = WatsonPlayer
             img = os.path.join(image_dir, 'Watson_Amelia_right.png')
+        elif self.selected_character == "Ninomae Ina'nis":
+            player_cls = InaPlayer
+            img = os.path.join(image_dir, 'Ninomae_Inanis_right.png')
         else:
             player_cls = GuraPlayer
             img = os.path.join(image_dir, 'Gawr_Gura_right.png')
@@ -279,7 +283,11 @@ class Game:
             hits = pygame.sprite.spritecollide(proj, self.enemies, False)
             if hits:
                 for enemy in hits:
-                    enemy.take_damage(10)
+                    if getattr(proj, "grapple", False):
+                        enemy.rect.centerx = self.player.rect.centerx
+                        enemy.pos.x = enemy.rect.x
+                    else:
+                        enemy.take_damage(10)
                 proj.kill()
         for attack in list(self.melee_attacks):
             hits = pygame.sprite.spritecollide(attack, self.enemies, False)
