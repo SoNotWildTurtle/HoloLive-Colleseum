@@ -202,3 +202,5 @@ another.  Paths are relative to the repository root.
 - Removed stray merge conflict comments left from earlier revisions.
 - Updated `.gitignore` to exclude temporary `test_nodes` directories created by
   the test suite.
+## 2025-08-09
+- Clarified zero-vector projectile behaviour and extended corresponding test.

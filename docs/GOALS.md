@@ -126,6 +126,7 @@ synchronization or discovery of other hosts.
   enemies, and enemies now harm the player on contact.
 - Polish menus with clearer prompts and optional controller hints.
 - Continue adding tests for new mechanics as they appear.
+- Cover edge cases like zero-length projectile shots to prevent crashes.
 - Design the "Growing Up" story mode with 20 chapter icons that load each level.
 - Record multiplayer results in a lightweight blockchain so wins submit a block
   shared with other players. Include search tools and a simple currency for

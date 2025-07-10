@@ -42,6 +42,8 @@ def test_player_shoot_zero_vector(tmp_path, monkeypatch):
     now = pygame.time.get_ticks()
     proj = player.shoot(now, player.rect.center)
     assert proj is not None
+    assert proj.velocity.x == PROJECTILE_SPEED
+    assert proj.velocity.y == 0
     pygame.quit()
 
 
