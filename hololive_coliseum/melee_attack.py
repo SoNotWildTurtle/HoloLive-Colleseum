@@ -10,6 +10,7 @@ class MeleeAttack(pygame.sprite.Sprite):
     def __init__(
         self, x: int, y: int, facing: int, from_enemy: bool = False
     ) -> None:
+    def __init__(self, x: int, y: int, facing: int) -> None:
         super().__init__()
         self.image = pygame.Surface(MELEE_SIZE, pygame.SRCALPHA)
         self.image.fill((255, 255, 0))  # yellow

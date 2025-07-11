@@ -11,6 +11,7 @@ from .state_sync import StateSync
 
 from .node_registry import add_node, load_nodes
 from .node_registry import prune_nodes
+from typing import Any, List, Tuple
 
 
 class NetworkManager:
@@ -33,6 +34,13 @@ class NetworkManager:
         self.address = address
         self.secret = secret
         self.encrypt_key = encrypt_key
+    Hosts respond to broadcast discovery packets so clients can
+    automatically find available games on the local network.
+    """
+
+    def __init__(self, host: bool = False, address: Tuple[str, int] = ("", 50007)) -> None:
+        self.host = host
+        self.address = address
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sock.setblocking(False)
         if host:
@@ -211,6 +219,9 @@ class NetworkManager:
     def send_state(self, data: dict[str, Any]) -> None:
         """Send a state update using delta compression."""
         payload = self._encode(self._sync.encode(data))
+        
+    def send_state(self, data: dict[str, Any]) -> None:
+        payload = json.dumps(data).encode("utf-8")
         if self.host:
             for client in list(self.clients):
                 try:
@@ -338,6 +349,14 @@ class NetworkManager:
                 if msg_type == "discover":
                     # respond to discovery with address for client to connect
                     resp = self._encode({"type": "host"})
+            try:
+                data = json.loads(packet.decode("utf-8"))
+            except json.JSONDecodeError:
+                continue
+            if self.host:
+                if data.get("type") == "discover":
+                    # respond to discovery with address for client to connect
+                    resp = json.dumps({"type": "host"}).encode("utf-8")
                     self.sock.sendto(resp, addr)
                     continue
                 self.clients.add(addr)
@@ -359,6 +378,7 @@ class NetworkManager:
         sock.settimeout(timeout)
         enc = NetworkManager(secret=secret)
         msg = enc._encode({"type": "discover"})
+        msg = json.dumps({"type": "discover"}).encode("utf-8")
         sock.sendto(msg, (broadcast_address, port))
         hosts: List[Tuple[str, int]] = []
         start = time.monotonic()
@@ -371,6 +391,10 @@ class NetworkManager:
                 break
             data = enc._decode(packet)
             if data is None:
+
+            try:
+                data = json.loads(packet.decode("utf-8"))
+            except json.JSONDecodeError:
                 continue
             if data.get("type") == "host":
                 hosts.append(addr)

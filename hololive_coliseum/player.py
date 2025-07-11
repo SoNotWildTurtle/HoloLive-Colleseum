@@ -5,6 +5,11 @@ import pygame
 from . import physics
 JUMP_VELOCITY = -10
 MOVE_SPEED = physics.MAX_MOVE_SPEED
+import pygame
+
+GRAVITY = 0.5
+JUMP_VELOCITY = -10
+MOVE_SPEED = 5
 PROJECTILE_COOLDOWN = 250  # milliseconds
 MELEE_COOLDOWN = 500  # milliseconds
 PARRY_COOLDOWN = 1000  # milliseconds
@@ -21,6 +26,10 @@ class PlayerCharacter(pygame.sprite.Sprite):
     Provides movement, combat mechanics and resource tracking. Subclasses
     override :py:meth:`special_attack` to implement unique abilities.
     """
+
+
+class Player(pygame.sprite.Sprite):
+    """Simple player sprite that can load an image or use a colored rectangle."""
 
     def __init__(
         self, x: int, y: int, image_path: str | None = None, color=(255, 255, 255)
@@ -49,6 +58,11 @@ class PlayerCharacter(pygame.sprite.Sprite):
         self.dodge_end = 0
         self.gravity_multiplier = 1.0
         self.friction_multiplier = 1.0
+        self.last_shot = 0
+        self.last_melee = -MELEE_COOLDOWN
+        self.last_parry = -PARRY_COOLDOWN
+        self.parrying = False
+        self.gravity_multiplier = 1.0
         self.max_health = 100
         self.health = self.max_health
         self.max_mana = 100
@@ -78,6 +92,18 @@ class PlayerCharacter(pygame.sprite.Sprite):
                 self.velocity.x = physics.apply_friction(
                     self.velocity.x, self.on_ground, self.friction_multiplier
                 )
+        
+    def handle_input(self, keys, now: int | None = None, key_bindings: dict[str, int] | None = None) -> None:
+        if now is None:
+            now = pygame.time.get_ticks()
+        if keys[pygame.K_LEFT]:
+            self.velocity.x = -MOVE_SPEED
+            self.direction = -1
+        elif keys[pygame.K_RIGHT]:
+            self.velocity.x = MOVE_SPEED
+            self.direction = 1
+        else:
+            self.velocity.x = 0
         if key_bindings is None:
             key_bindings = {
                 "block": pygame.K_LSHIFT,
@@ -104,6 +130,14 @@ class PlayerCharacter(pygame.sprite.Sprite):
             self.on_ground = False
 
     def shoot(self, now: int, target: tuple[int, int] | None = None):
+        self.blocking = keys[key_bindings.get("block", pygame.K_LSHIFT)]
+        if keys[key_bindings.get("parry", pygame.K_c)]:
+            self.parry(now)
+        if self.on_ground and keys[key_bindings.get("jump", pygame.K_SPACE)]:
+            self.velocity.y = JUMP_VELOCITY
+            self.on_ground = False
+
+    def shoot(self, now: int):
         """Return a projectile if the cooldown has elapsed."""
         from .projectile import Projectile
 
@@ -116,6 +150,9 @@ class PlayerCharacter(pygame.sprite.Sprite):
             else:
                 direction = pygame.math.Vector2(self.direction, 0)
             return Projectile(x, y, direction)
+            x = self.rect.centerx + self.direction * 20
+            y = self.rect.centery
+            return Projectile(x, y, self.direction)
         return None
 
     def melee_attack(self, now: int):
@@ -153,6 +190,8 @@ class PlayerCharacter(pygame.sprite.Sprite):
 
     def apply_gravity(self) -> None:
         self.velocity.y = physics.apply_gravity(self.velocity.y, self.gravity_multiplier)
+    def apply_gravity(self) -> None:
+        self.velocity.y += GRAVITY * self.gravity_multiplier
 
     def take_damage(self, amount: int) -> None:
         """Reduce health by the given amount, considering block/parry."""
@@ -164,6 +203,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
         if self.health == 0 and self.lives > 0:
             self.lives -= 1
             self.health = self.max_health
+
 
     def use_mana(self, amount: int) -> bool:
         """Spend mana if available. Returns True if successful."""
@@ -226,6 +266,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
 
 
 class GuraPlayer(PlayerCharacter):
+class GuraPlayer(Player):
     """Player subclass implementing Gura's special trident attack."""
 
     def __init__(self, x: int, y: int, image_path: str | None = None) -> None:
@@ -244,6 +285,16 @@ class GuraPlayer(PlayerCharacter):
             proj.image = pygame.Surface((15, 5))
             proj.image.fill((0, 255, 255))
             proj.velocity *= 1.5
+        from .projectile import Projectile
+
+        if now - self.last_special >= SPECIAL_COOLDOWN and self.use_mana(20):
+            self.last_special = now
+            x = self.rect.centerx + self.direction * 25
+            y = self.rect.centery
+            proj = Projectile(x, y, self.direction)
+            proj.image = pygame.Surface((15, 5))
+            proj.image.fill((0, 255, 255))
+            proj.velocity.x *= 1.5
             return proj
         return None
 
@@ -765,3 +816,19 @@ class Enemy(PlayerCharacter):
 # Alias for backward compatibility
 Player = PlayerCharacter
 
+class Enemy(Player):
+    """Basic enemy NPC using the same mechanics as players."""
+
+    def __init__(self, x: int, y: int, image_path: str | None = None) -> None:
+        super().__init__(x, y, image_path)
+
+    def handle_ai(self, target: Player, now: int) -> None:
+        """Very simple AI that follows the target."""
+        if target.rect.centerx > self.rect.centerx:
+            self.velocity.x = MOVE_SPEED / 2
+            self.direction = 1
+        else:
+            self.velocity.x = -MOVE_SPEED / 2
+            self.direction = -1
+        if self.on_ground and abs(target.rect.centery - self.rect.centery) > 20:
+            self.velocity.y = JUMP_VELOCITY

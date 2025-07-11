@@ -56,6 +56,7 @@
 - Added menu step to choose online or offline multiplayer.
 - Updated tests for discovery and menu options.
 
+
 ## 2025-07-16
 - Completed settings menu with dynamic volume display and a new key-binding
   editor.
@@ -288,3 +289,4 @@ another.  Paths are relative to the repository root.
 - Added Accounts submenu under Settings with Register/Delete options.
 - `Game.execute_account_option` handles account actions and tests can invoke it.
 - Documentation and goals updated to mark account management implemented.
+

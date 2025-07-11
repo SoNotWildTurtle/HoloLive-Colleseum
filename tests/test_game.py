@@ -8,7 +8,8 @@ os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
 def test_game_initialization(tmp_path, monkeypatch):
     monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
     from hololive_coliseum.game import Game
-
+    monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
+    from hololive_coliseum.game import Game
     game = Game()
     assert game.width == 800
     assert game.height == 600
@@ -18,6 +19,8 @@ def test_draw_menu_fills_cyan(tmp_path, monkeypatch):
     monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
     from hololive_coliseum.game import Game, MENU_BG_COLOR
 
+    monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
+    from hololive_coliseum.game import Game, MENU_BG_COLOR
     game = Game(width=100, height=100)
     game._draw_menu()
     assert game.screen.get_at((0, 0))[:3] == MENU_BG_COLOR
@@ -236,3 +239,7 @@ def test_start_and_stop_node(tmp_path, monkeypatch):
     game.stop_node()
     assert game.network_manager is None
     assert not game.node_hosting
+    monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
+    from hololive_coliseum.game import Game
+    game = Game()
+    assert game.mp_type_options == ["Offline", "Online"]

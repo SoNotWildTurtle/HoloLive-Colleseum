@@ -15,6 +15,12 @@ def test_network_send_receive():
     addr = host.sock.getsockname()
     client = NetworkManager(host=False, address=addr, encrypt_key=b"k")
     sync = StateSync()
+
+
+def test_network_send_receive():
+    host = NetworkManager(host=True, address=("127.0.0.1", 0))
+    addr = host.sock.getsockname()
+    client = NetworkManager(host=False, address=addr)
     msg = {"x": 1}
     client.send_state(msg)
     # Give OS time to deliver
@@ -25,6 +31,7 @@ def test_network_send_receive():
     assert state == msg
     host.sock.close()
     client.sock.close()
+    assert received and received[0][1] == msg
 
 
 def test_network_discovery():

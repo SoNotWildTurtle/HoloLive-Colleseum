@@ -12,6 +12,7 @@ from hololive_coliseum.melee_attack import MeleeAttack, MELEE_LIFETIME
 def test_projectile_moves():
     direction = pygame.math.Vector2(1, 0)
     proj = Projectile(0, 0, direction)
+    proj = Projectile(0, 0, 1)
     orig_x = proj.rect.x
     proj.update()
     assert proj.rect.x == orig_x + PROJECTILE_SPEED
