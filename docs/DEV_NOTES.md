@@ -290,3 +290,48 @@ another.  Paths are relative to the repository root.
 - `Game.execute_account_option` handles account actions and tests can invoke it.
 - Documentation and goals updated to mark account management implemented.
 
+## 2025-08-29
+- Added a high-gravity zone to levels so jumps are shorter in that area.
+- Updated development plan and goals to mention the new zone.
+- Added tests ensuring both gravity zones load correctly.
+
+## 2025-08-30
+- Polished all menus with a teal border for better readability.
+- Added a pause menu triggered with **Esc** containing Resume and Main Menu options.
+- Documented the new feature and updated goals accordingly.
+
+## 2025-08-31
+- Added a Game Over screen that appears when the player loses all lives.
+- The screen shows the time survived and returns to the main menu.
+
+## 2025-09-01
+- Game Over screen now also displays the best time across runs.
+- Best time persists in settings and updates when a new record is reached.
+
+## 2025-09-02
+- Enemies are removed when their health reaches zero and the player gains a
+  score point.
+- The current score is shown during gameplay and on the Game Over screen.
+
+## 2025-09-03
+- Added victory condition when all enemies are defeated or the timer reaches the
+  limit.
+- A new Victory screen displays the final time, best time and score before
+  returning to the main menu.
+
+## 2025-09-04
+- Game Over and Victory screens now wait three seconds before showing options.
+- Added **Play Again** to return to character selection or **Main Menu** to quit
+  the run.
+
+## 2025-09-05
+- Main menu offers **How to Play** and **Credits** entries with simple screens.
+
+## 2025-09-06
+- Tracked a high score across runs and displayed it on Game Over and Victory screens.
+- Settings now save `best_score` alongside the best time.
+
+## 2025-09-07
+- Added a **Records** screen on the main menu showing the best time and high score.
+- Planned to sync these records across nodes via the blockchain in future updates.
+

@@ -2,7 +2,6 @@
 
 Each Hololive member will gain a unique special ability. Planned concepts:
 
-
 - **Gawr Gura**: Exploding trident throw.
 - **Watson Amelia**: Time travel dash that slows opponents. *(Implemented)*
 - **Ninomae Ina'nis**: Tentacle grapple pulling enemies closer. *(Implemented)*
@@ -26,6 +25,7 @@ Each Hololive member will gain a unique special ability. Planned concepts:
 
 These abilities will be implemented as subclasses of the base `PlayerCharacter` class.
 
+
 - **Watson Amelia**: Time travel dash that slows opponents.
 - **Ninomae Ina'nis**: Tentacle grapple pulling enemies closer.
 - **Takanashi Kiara**: Fiery winged leap dealing damage on landing.
@@ -37,4 +37,3 @@ These abilities will be implemented as subclasses of the base `PlayerCharacter` 
 - **Hakos Baelz**: Randomized chaos effect altering gravity or controls.
 
 These abilities will be implemented as subclasses of the base `Player` class.
-

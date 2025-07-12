@@ -27,10 +27,8 @@ class PlayerCharacter(pygame.sprite.Sprite):
     override :py:meth:`special_attack` to implement unique abilities.
     """
 
-
 class Player(pygame.sprite.Sprite):
     """Simple player sprite that can load an image or use a colored rectangle."""
-
     def __init__(
         self, x: int, y: int, image_path: str | None = None, color=(255, 255, 255)
     ) -> None:
@@ -69,6 +67,7 @@ class Player(pygame.sprite.Sprite):
         self.mana = self.max_mana
         self.blocking = False
         self.lives = 3
+
         
     def handle_input(
         self,
@@ -203,7 +202,6 @@ class Player(pygame.sprite.Sprite):
         if self.health == 0 and self.lives > 0:
             self.lives -= 1
             self.health = self.max_health
-
 
     def use_mana(self, amount: int) -> bool:
         """Spend mana if available. Returns True if successful."""
@@ -740,6 +738,14 @@ class Enemy(PlayerCharacter):
         super().__init__(x, y, image_path)
         self.difficulty = difficulty
         self.last_ai_action = 0
+        self.lives = 1
+
+    def take_damage(self, amount: int) -> None:
+        if self.blocking:
+            amount //= 2
+        self.health = max(0, self.health - amount)
+        if self.health == 0:
+            self.kill()
 
     def shoot(self, now: int, target: tuple[int, int] | None = None):
         proj = super().shoot(now, target)

@@ -133,7 +133,8 @@ synchronization or discovery of other hosts.
 *IRyS implemented.*
 *Hakos Baelz implemented.*
 - Expand roster to **20** playable characters with placeholder specials.
- - Expand map mechanics with gravity zones, spike traps and ice patches.
+- Expand map mechanics with gravity zones, spike traps and ice patches.
+
 - Improve enemy AI to navigate around hazards intelligently.
 - Add AI-controlled opponents that use the shared `PlayerCharacter` base class.
 - Provide a difficulty selector so AI behavior can scale from Easy to Hard.
@@ -141,6 +142,18 @@ synchronization or discovery of other hosts.
 - Add a dodge action for players and let advanced AI attempt dodges when threatened.
 - Implement combat collisions so projectiles and melee attacks damage
   enemies, and enemies now harm the player on contact.
+- Polish menus with clearer prompts and optional controller hints. *(Improved with teal borders)*
+- Add an in-game pause menu triggered with Esc.
+- Display a Game Over screen when the player runs out of lives.
+- Track the best survival time and show it on the Game Over screen.
+- Track the highest score and show it on Game Over and Victory screens.
+- Keep a running score of defeated enemies and display it during gameplay and on
+  the Game Over screen.
+- Show a Victory screen when the timer expires or all enemies are defeated.
+- End screens should pause for a moment before showing **Play Again** and
+  **Main Menu** buttons; Play Again returns to character selection.
+- Provide **How to Play** instructions and a **Credits** screen in the main menu.
+- Include a **Records** menu showing your best time and high score.
 - Polish menus with clearer prompts and optional controller hints.
 - Add grid-based map selection and a lobby screen listing joined players.
 - Continue adding tests for new mechanics as they appear.

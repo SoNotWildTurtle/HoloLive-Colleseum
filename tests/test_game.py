@@ -8,6 +8,7 @@ os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
 def test_game_initialization(tmp_path, monkeypatch):
     monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
     from hololive_coliseum.game import Game
+
     monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
     from hololive_coliseum.game import Game
     game = Game()
@@ -124,6 +125,18 @@ def test_setup_level_resets_timers(tmp_path, monkeypatch):
     assert game.last_enemy_damage == 0
 
 
+def test_setup_level_adds_two_gravity_zones(tmp_path, monkeypatch):
+    monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
+    from hololive_coliseum.game import Game
+
+    game = Game()
+    game.ai_players = 0
+    game._setup_level()
+    assert len(game.gravity_zones) == 2
+    multipliers = sorted(zone.multiplier for zone in game.gravity_zones)
+    assert multipliers == [0.2, 2.0]
+
+
 def test_enemy_ai_moves_toward_player(tmp_path, monkeypatch):
     monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
     from hololive_coliseum.game import Game
@@ -186,6 +199,72 @@ def test_character_menu_has_back_option(tmp_path, monkeypatch):
     assert game.character_menu_options[-1] == "Back"
 
 
+def test_pause_menu_options(tmp_path, monkeypatch):
+    monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
+    from hololive_coliseum.game import Game
+
+    game = Game()
+    assert game.pause_options == ["Resume", "Main Menu"]
+
+
+def test_draw_pause_menu(tmp_path, monkeypatch):
+    monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
+    from hololive_coliseum.game import Game, MENU_BG_COLOR
+
+    game = Game(width=90, height=90)
+    game._draw_pause_menu()
+    assert game.screen.get_at((0, 0))[:3] == MENU_BG_COLOR
+
+
+def test_main_menu_has_info_options(tmp_path, monkeypatch):
+    monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
+    from hololive_coliseum.game import Game
+
+    game = Game()
+    assert "How to Play" in game.main_menu_options
+    assert "Credits" in game.main_menu_options
+    assert "Records" in game.main_menu_options
+
+
+def test_draw_how_to_play(tmp_path, monkeypatch):
+    monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
+    from hololive_coliseum.game import Game, MENU_BG_COLOR
+
+    game = Game(width=80, height=80)
+    game._draw_how_to_play()
+    assert game.screen.get_at((0, 0))[:3] == MENU_BG_COLOR
+
+
+def test_draw_credits(tmp_path, monkeypatch):
+    monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
+    from hololive_coliseum.game import Game, MENU_BG_COLOR
+
+    game = Game(width=80, height=80)
+    game._draw_credits()
+    assert game.screen.get_at((0, 0))[:3] == MENU_BG_COLOR
+
+
+def test_draw_scoreboard(tmp_path, monkeypatch):
+    monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
+    from hololive_coliseum.game import Game, MENU_BG_COLOR
+
+    game = Game(width=80, height=80)
+    game._draw_scoreboard_menu()
+    assert game.screen.get_at((0, 0))[:3] == MENU_BG_COLOR
+
+
+def test_escape_enters_pause(tmp_path, monkeypatch):
+    monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
+    import pygame
+    from hololive_coliseum.game import Game
+
+    game = Game()
+    game.state = "playing"
+    pygame.event.post(pygame.event.Event(pygame.KEYDOWN, {"key": pygame.K_ESCAPE}))
+    pygame.event.post(pygame.event.Event(pygame.QUIT))
+    game.run()
+    assert game.state == "paused"
+
 def test_draw_lobby_menu(tmp_path, monkeypatch):
     monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
     from hololive_coliseum.game import Game, MENU_BG_COLOR
@@ -239,6 +318,175 @@ def test_start_and_stop_node(tmp_path, monkeypatch):
     game.stop_node()
     assert game.network_manager is None
     assert not game.node_hosting
+
+def test_game_over_state(tmp_path, monkeypatch):
+    monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
+    import pygame
+
+    pygame.init()
+    pygame.display.set_mode((1, 1))
+    from hololive_coliseum.game import Game
+
+    game = Game()
+    game.selected_character = "Gawr Gura"
+    game._setup_level()
+    game.state = "playing"
+    game.player.lives = 0
+    pygame.event.post(pygame.event.Event(pygame.QUIT))
+    game.run()
+    assert game.state == "game_over"
+    pygame.quit()
+
+
+def test_best_time_saved(tmp_path, monkeypatch):
+    monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
+    import pygame
+
+    pygame.init()
+    pygame.display.set_mode((1, 1))
+    from hololive_coliseum.game import Game, load_settings
+
+    game = Game()
+    game.selected_character = "Gawr Gura"
+    game._setup_level()
+    game.state = "playing"
+    game.level_start_time = pygame.time.get_ticks() - 3000
+    game.player.lives = 0
+    pygame.event.post(pygame.event.Event(pygame.QUIT))
+    game.run()
+    settings = load_settings()
+    assert settings.get("best_time", 0) >= 3
+    pygame.quit()
+
+
+def test_best_score_saved(tmp_path, monkeypatch):
+    monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
+    import pygame
+
+    pygame.init()
+    pygame.display.set_mode((1, 1))
+    from hololive_coliseum.game import Game, load_settings
+
+    game = Game()
+    game.selected_character = "Gawr Gura"
+    game._setup_level()
+    game.state = "playing"
+    game.score = 5
+    game.player.lives = 0
+    pygame.event.post(pygame.event.Event(pygame.QUIT))
+    game.run()
+    settings = load_settings()
+    assert settings.get("best_score", 0) >= 5
+    pygame.quit()
+
+
+def test_enemy_kill_increments_score(tmp_path, monkeypatch):
+    monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
+    import pygame
+
+    pygame.init()
+    pygame.display.set_mode((1, 1))
+    from hololive_coliseum.game import Game
+    from hololive_coliseum.projectile import Projectile
+
+    game = Game()
+    game.selected_character = "Gawr Gura"
+    game.ai_players = 1
+    game._setup_level()
+    enemy = next(iter(game.enemies))
+    enemy.health = 5
+    proj = Projectile(enemy.rect.centerx, enemy.rect.centery, pygame.math.Vector2(1, 0))
+    game.projectiles.add(proj)
+    game._handle_collisions()
+    assert game.score == 1
+    assert len(game.enemies) == 0
+    pygame.quit()
+
+
+def test_victory_state(tmp_path, monkeypatch):
+    monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
+    import pygame
+
+    pygame.init()
+    pygame.display.set_mode((1, 1))
+    from hololive_coliseum.game import Game
+
+    game = Game()
+    game.selected_character = "Gawr Gura"
+    game._setup_level()
+    game.state = "playing"
+    game.level_start_time = pygame.time.get_ticks() - game.level_limit * 1000 - 100
+    pygame.event.post(pygame.event.Event(pygame.QUIT))
+    game.run()
+    assert game.state == "victory"
+    pygame.quit()
+
+
+def test_final_time_victory(tmp_path, monkeypatch):
+    monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
+    import pygame
+
+    pygame.init()
+    pygame.display.set_mode((1, 1))
+    from hololive_coliseum.game import Game
+
+    game = Game()
+    game.selected_character = "Gawr Gura"
+    game._setup_level()
+    game.state = "playing"
+    game.level_start_time = pygame.time.get_ticks() - game.level_limit * 1000 - 100
+    pygame.event.post(pygame.event.Event(pygame.QUIT))
+    game.run()
+    assert game.final_time >= game.level_limit
+    pygame.quit()
+
+
+def test_final_time_game_over(tmp_path, monkeypatch):
+    monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
+    import pygame
+
+    pygame.init()
+    pygame.display.set_mode((1, 1))
+    from hololive_coliseum.game import Game
+
+    game = Game()
+    game.selected_character = "Gawr Gura"
+    game._setup_level()
+    game.state = "playing"
+    game.level_start_time = pygame.time.get_ticks() - 2000
+    game.player.lives = 0
+    pygame.event.post(pygame.event.Event(pygame.QUIT))
+    game.run()
+    assert game.final_time >= 2
+    pygame.quit()
+
+
+def test_end_menu_options(tmp_path, monkeypatch):
+    monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
+    from hololive_coliseum.game import Game
+
+    game = Game()
+    assert game.game_over_options == ["Play Again", "Main Menu"]
+    assert game.victory_options == ["Play Again", "Main Menu"]
+
+
+def test_play_again_returns_to_char(tmp_path, monkeypatch):
+    monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
+    import pygame
+
+    pygame.init()
+    pygame.display.set_mode((1, 1))
+    from hololive_coliseum.game import Game
+
+    game = Game()
+    game.state = "victory"
+    game.show_end_options = True
+    game.menu_index = 0  # Play Again
+    pygame.event.post(pygame.event.Event(pygame.KEYDOWN, {"key": pygame.K_RETURN}))
+    pygame.event.post(pygame.event.Event(pygame.QUIT))
+    game.run()
+    assert game.state == "char"
+    pygame.quit()
     monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
     from hololive_coliseum.game import Game
     game = Game()

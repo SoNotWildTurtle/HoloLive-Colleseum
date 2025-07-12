@@ -215,6 +215,10 @@ class NetworkManager:
                 break
         sock.close()
         return clients
+
+    def send_state(self, data: dict[str, Any]) -> None:
+        """Send a state update using delta compression."""
+        payload = self._encode(self._sync.encode(data))
         
     def send_state(self, data: dict[str, Any]) -> None:
         """Send a state update using delta compression."""

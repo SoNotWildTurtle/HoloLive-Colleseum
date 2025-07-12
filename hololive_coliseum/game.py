@@ -1,7 +1,6 @@
 import os
 import pygame
 
-
 from .player import (
     PlayerCharacter,
     GuraPlayer,
@@ -26,6 +25,7 @@ from .player import (
     SubaruPlayer,
     Enemy,
 )
+
 from .projectile import Projectile, ExplodingProjectile
 from .melee_attack import MeleeAttack
 from .gravity_zone import GravityZone
@@ -65,7 +65,6 @@ class Game:
         self.height = self.settings.get("height", height)
         self.volume = self.settings.get("volume", 1.0)
         os.environ.setdefault("SDL_AUDIODRIVER", "dummy")
-
         self.mixer_ready = False
         try:
             pygame.mixer.init()
@@ -73,7 +72,6 @@ class Game:
             self.mixer_ready = True
         except pygame.error:
             self.mixer_ready = False
-
         try:
             pygame.mixer.init()
             pygame.mixer.music.set_volume(self.volume)
@@ -112,6 +110,17 @@ class Game:
         pygame.display.set_caption("Hololive Coliseum")
         self.clock = pygame.time.Clock()
         self.running = False
+        self.state = "splash"  # splash -> main_menu -> howto/credits/scoreboard -> mode -> solo_multi -> mp_type -> char -> lobby -> map/chapter -> settings -> accounts -> playing -> paused -> victory/game_over
+        self.menu_index = 0
+        self.main_menu_options = [
+            "New Game",
+            "Settings",
+            "How to Play",
+            "Credits",
+            "Records",
+            "Exit",
+        ]
+
         self.state = "splash"  # splash -> main_menu -> mode -> solo_multi -> mp_type -> char -> lobby -> map/chapter -> settings -> accounts -> playing
         self.menu_index = 0
         self.main_menu_options = ["New Game", "Settings", "Exit"]
@@ -119,6 +128,15 @@ class Game:
         self.solo_multi_options = ["Solo", "Multiplayer", "Back"]
         self.mp_type_options = ["Offline", "Online", "Back"]
         self.online_multiplayer = False
+        self.pause_options = ["Resume", "Main Menu"]
+        self.game_over_options = ["Play Again", "Main Menu"]
+        self.victory_options = ["Play Again", "Main Menu"]
+        self.final_time = 0
+        self.end_time = 0
+        self.show_end_options = False
+        self.best_time = self.settings.get("best_time", 0)
+        self.best_score = self.settings.get("best_score", 0)
+        self.score = 0
         self.settings_options = [
             "Key Bindings",
             "Controller Bindings",
@@ -129,6 +147,7 @@ class Game:
             "Accounts",
             "Back",
         ]
+        self.info_options = ["Back"]
         self.key_options = [
             "jump",
             "shoot",
@@ -185,7 +204,6 @@ class Game:
         self.ai_players = 0
         self.player_names = ["Player 1"]
         self.multiplayer = False
-
             "special": pygame.K_v,
         }
         self.key_bindings = self.settings.get("key_bindings", default_keys)
@@ -215,7 +233,6 @@ class Game:
         self.selected_character: str | None = None
         self.selected_map: str | None = None
         self.selected_chapter: str | None = None
-
         image_dir = os.path.join(os.path.dirname(__file__), "..", "Images")
 
         def _create_icon(text: str, size=(64, 64)) -> pygame.Surface:
@@ -227,13 +244,10 @@ class Game:
             return surf
 
         image_dir = os.path.join(os.path.dirname(__file__), '..', 'Images')
-
-
         def _load(name: str, size=(64, 64)) -> pygame.Surface:
             path = os.path.join(image_dir, name)
             if os.path.exists(path):
                 return pygame.image.load(path).convert_alpha()
-
             return _create_icon(os.path.splitext(name)[0], size)
 
         self.character_images = {
@@ -281,7 +295,6 @@ class Game:
         self.title_font = pygame.font.SysFont(None, 64)
         self.menu_font = pygame.font.SysFont(None, 32)
 
-
         # Stage setup
         self.ground_y = self.height - 50
         self.next_powerup_time = 0
@@ -292,6 +305,8 @@ class Game:
 
     def _setup_level(self) -> None:
         """Initialize or reset gameplay objects based on the chosen character."""
+        self.final_time = 0
+        self.score = 0
         image_dir = os.path.join(os.path.dirname(__file__), "..", "Images")
         if self.selected_character == "Watson Amelia":
             player_cls = WatsonPlayer
@@ -355,7 +370,6 @@ class Game:
             img = os.path.join(image_dir, "Gawr_Gura_right.png")
         self.player = player_cls(100, self.ground_y - 60, img)
         self.difficulty = self.difficulty_levels[self.difficulty_index]
-
         # Simple stage with a single ground platform
         self.ground_y = self.height - 50
         player_image = os.path.join(image_dir, "Gawr_Gura_right.png")
@@ -365,7 +379,6 @@ class Game:
         self.projectiles = pygame.sprite.Group()
         self.melee_attacks = pygame.sprite.Group()
         self.gravity_zones = pygame.sprite.Group()
-
         self.healing_zones = pygame.sprite.Group()
         self.hazards = pygame.sprite.Group()
         self.powerups = pygame.sprite.Group()
@@ -384,16 +397,16 @@ class Game:
             e.last_ai_action = -e.AI_LEVELS[self.difficulty]["react_ms"]
             self.enemies.add(e)
             self.all_sprites.add(e)
-
-
-
         # Example low gravity zone in the middle of the stage
 
         zone_rect = pygame.Rect(self.width // 2 - 50, self.ground_y - 150, 100, 50)
         self.low_gravity_zone = GravityZone(zone_rect, 0.2)
         self.gravity_zones.add(self.low_gravity_zone)
         self.all_sprites.add(self.low_gravity_zone)
-
+        high_rect = pygame.Rect(self.width // 2 + 70, self.ground_y - 120, 80, 40)
+        self.high_gravity_zone = GravityZone(high_rect, 2.0)
+        self.gravity_zones.add(self.high_gravity_zone)
+        self.all_sprites.add(self.high_gravity_zone)
         spike = SpikeTrap(pygame.Rect(self.width // 3, self.ground_y - 20, 40, 20))
         ice = IceZone(pygame.Rect(self.width // 2 + 80, self.ground_y - 20, 60, 20))
         self.hazards.add(spike, ice)
@@ -463,6 +476,9 @@ class Game:
                         enemy.take_damage(5)
                     else:
                         enemy.take_damage(10)
+                    if enemy.health == 0:
+                        enemy.kill()
+                        self.score += 1
                 if not getattr(proj, "pierce", False):
                     proj.kill()
         for attack in list(self.melee_attacks):
@@ -475,6 +491,9 @@ class Game:
             if hits:
                 for enemy in hits:
                     enemy.take_damage(15)
+                    if enemy.health == 0:
+                        enemy.kill()
+                        self.score += 1
             attack.kill()
         if (
             pygame.sprite.spritecollideany(self.player, self.enemies)
@@ -547,6 +566,19 @@ class Game:
                 ):
                     self.state = "main_menu"
                     self.menu_index = 0
+                elif (
+                    self.state == "playing"
+                    and event.type == pygame.KEYDOWN
+                    and event.key == pygame.K_ESCAPE
+                ):
+                    self.state = "paused"
+                    self.menu_index = 0
+                elif (
+                    self.state == "paused"
+                    and event.type == pygame.KEYDOWN
+                    and event.key == pygame.K_ESCAPE
+                ):
+                    self.state = "playing"
 
                 elif (
                     self.state
@@ -561,6 +593,16 @@ class Game:
                         "map",
                         "chapter",
                         "mp_type",
+                        "paused",
+                        "victory",
+                        "game_over",
+                    }
+                    and event.type == pygame.KEYDOWN
+                    and (
+                        self.state not in {"victory", "game_over"}
+                        or self.show_end_options
+                    )
+                ):
                     }
                     and event.type == pygame.KEYDOWN
                 ):
@@ -575,7 +617,6 @@ class Game:
                     "chapter",
                     "mp_type",
                 } and event.type == pygame.KEYDOWN:
-
                     options = {
                         "main_menu": self.main_menu_options,
                         "mode": self.mode_options,
@@ -584,12 +625,18 @@ class Game:
                         "settings": self.settings_options,
                         "node_settings": self.node_options,
                         "accounts": self.account_options,
+                        "howto": self.info_options,
+                        "credits": self.info_options,
+                        "scoreboard": self.info_options,
                         "key_bindings": self.key_options,
                         "controller_bindings": self.controller_options,
                         "char": self.character_menu_options,
                         "map": self.map_menu_options,
                         "chapter": self.chapter_menu_options,
                         "lobby": self.lobby_options,
+                        "paused": self.pause_options,
+                        "victory": self.victory_options,
+                        "game_over": self.game_over_options,
                     }[self.state]
                     if (
                         self.state == "char"
@@ -671,6 +718,15 @@ class Game:
                                 self.menu_index = 0
                             elif choice == "Settings":
                                 self.state = "settings"
+                                self.menu_index = 0
+                            elif choice == "How to Play":
+                                self.state = "howto"
+                                self.menu_index = 0
+                            elif choice == "Credits":
+                                self.state = "credits"
+                                self.menu_index = 0
+                            elif choice == "Records":
+                                self.state = "scoreboard"
                                 self.menu_index = 0
                             elif choice == "Exit":
                                 self.running = False
@@ -839,6 +895,30 @@ class Game:
                                 self.execute_account_option("Register Account")
                             elif choice == "Delete Account":
                                 self.execute_account_option("Delete Account")
+                        elif self.state in {"howto", "credits", "scoreboard"}:
+                            if choice == "Back":
+                                self.state = "main_menu"
+                                self.menu_index = 0
+                        elif self.state == "paused":
+                            if choice == "Resume":
+                                self.state = "playing"
+                            elif choice == "Main Menu":
+                                self.state = "main_menu"
+                                self.menu_index = 0
+                        elif self.state == "game_over":
+                            if choice == "Play Again":
+                                self.state = "char"
+                                self.menu_index = 0
+                            elif choice == "Main Menu":
+                                self.state = "main_menu"
+                                self.menu_index = 0
+                        elif self.state == "victory":
+                            if choice == "Play Again":
+                                self.state = "char"
+                                self.menu_index = 0
+                            elif choice == "Main Menu":
+                                self.state = "main_menu"
+                                self.menu_index = 0
                 elif self.state == "rebind" and event.type == pygame.KEYDOWN:
                     self.key_bindings[self.rebind_action] = event.key
                     self.state = "key_bindings"
@@ -848,13 +928,20 @@ class Game:
                 ):
                     self.controller_bindings[self.rebind_action] = event.button
                     self.state = "controller_bindings"
+            now = pygame.time.get_ticks()
+            if (
+                self.state in {"victory", "game_over"}
+                and not self.show_end_options
+                and now - self.end_time >= 3000
+            ):
+                self.show_end_options = True
+
                                 self.screen = pygame.display.set_mode((self.width, self.height))
                             elif choice == "Volume":
                                 pass
                             elif choice == "Wipe Saves":
                                 wipe_saves()
             now = pygame.time.get_ticks()
-
             if self.state == "splash":
                 self._draw_menu()
             elif self.state == "main_menu":
@@ -887,6 +974,18 @@ class Game:
                 self._draw_node_menu()
             elif self.state == "accounts":
                 self._draw_accounts_menu()
+            elif self.state == "howto":
+                self._draw_how_to_play()
+            elif self.state == "credits":
+                self._draw_credits()
+            elif self.state == "scoreboard":
+                self._draw_scoreboard_menu()
+            elif self.state == "paused":
+                self._draw_pause_menu()
+            elif self.state == "victory":
+                self._draw_victory_menu()
+            elif self.state == "game_over":
+                self._draw_game_over_menu()
             else:
                 keys = pygame.key.get_pressed()
 
@@ -974,6 +1073,9 @@ class Game:
                     hz = pygame.sprite.spritecollideany(enemy, self.hazards)
                     if isinstance(hz, SpikeTrap):
                         enemy.take_damage(hz.damage)
+                        if enemy.health == 0:
+                            enemy.kill()
+                            self.score += 1
                     enemy.update(self.ground_y, now)
                 self.projectiles.update()
                 self.melee_attacks.update()
@@ -1003,6 +1105,16 @@ class Game:
                     if proj.rect.right < 0 or proj.rect.left > self.width:
                         proj.kill()
                 if self.player.lives == 0:
+                    self.final_time = (now - self.level_start_time) // 1000
+                    if self.final_time > self.best_time:
+                        self.best_time = self.final_time
+                    if self.score > self.best_score:
+                        self.best_score = self.score
+                    self.state = "game_over"
+                    self.end_time = now
+                    self.show_end_options = False
+                    self.menu_index = 0
+                    continue
                     self.state = "main_menu"
                     self.menu_index = 0
                     continue
@@ -1023,10 +1135,27 @@ class Game:
                 self.all_sprites.draw(self.screen)
                 self.player.draw_status(self.screen)
                 elapsed = (now - self.level_start_time) // 1000
+                if elapsed >= self.level_limit or len(self.enemies) == 0:
+                    self.final_time = elapsed
+                    if self.final_time > self.best_time:
+                        self.best_time = self.final_time
+                    if self.score > self.best_score:
+                        self.best_score = self.score
+                    self.state = "victory"
+                    self.end_time = now
+                    self.show_end_options = False
+                    self.menu_index = 0
+                    continue
                 timer_text = self.menu_font.render(
                     f"Time: {elapsed}", True, (255, 255, 255)
                 )
                 self.screen.blit(timer_text, (self.width - 120, 10))
+                score_text = self.menu_font.render(
+                    f"Score: {self.score}", True, (255, 255, 255)
+                )
+                self.screen.blit(score_text, (10, 10))
+
+            self._poll_network()
 
             self._poll_network()
                     pygame.Rect(0, self.ground_y, self.width, self.height - self.ground_y),
@@ -1041,6 +1170,8 @@ class Game:
                 "width": self.width,
                 "height": self.height,
                 "volume": self.volume,
+                "best_time": self.best_time,
+                "best_score": self.best_score,
                 "key_bindings": self.key_bindings,
                 "controller_bindings": self.controller_bindings,
             }

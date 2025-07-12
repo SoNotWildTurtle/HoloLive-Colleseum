@@ -6,10 +6,13 @@ Hololive Coliseum is a platform fighting game inspired by Super Smash Brothers, 
 
 Additional networking concepts are described in `DEV_PLAN_NETWORK.md`.
 
+
+
 # HoloLive Coliseum Development Plan
 
 ## Project Overview
 HoloLive Coliseum is a platform fighting game inspired by Super Smash Brothers, featuring popular Hololive Vtubers as playable characters. The game will support single-player and multiplayer modes with both keyboard/mouse and console controller input.
+
 
 
 ## Goals
@@ -57,9 +60,7 @@ HoloLive Coliseum is a platform fighting game inspired by Super Smash Brothers, 
 5. **Multiplayer Implementation**
    - Add local multiplayer.
    - Integrate networked multiplayer.
-
    - Allow players to join on the character screen and add AI opponents.
-
 
 6. **Polish and Content**
    - Improved animations and sound effects.
@@ -73,12 +74,12 @@ HoloLive Coliseum is a platform fighting game inspired by Super Smash Brothers, 
 
 ## Next Steps
 - Continue refining player abilities and additional characters.
-
 - Add Ouro Kronii with a time-freeze parry. *(Implemented)*
 - Add IRyS with a crystal shield. *(Implemented)*
 - Add Hakos Baelz with a chaos effect. *(Implemented)*
 - Add Sakura Miko with a piercing beam special. *(Implemented)*
 - Polish melee attack, blocking, and parry mechanics.
+ - Expand maps and experiment with more gravity zones. *(High-gravity zone implemented)*
 - Expand maps and experiment with more gravity zones.
 - Introduce spike traps and ice zones and teach AI to avoid them.
 - Refine existing local multiplayer features.
@@ -116,6 +117,18 @@ HoloLive Coliseum is a platform fighting game inspired by Super Smash Brothers, 
 - Validate players against the account registry before saving a block to the
   chain.
 - Add `get_balance` helper returning the stored currency for a player.
+- Add a pause menu accessible with Esc during gameplay. *(Implemented)*
+- Show a Game Over screen with time survived when the player loses all lives.
+- Record the best survival time and show it on the Game Over screen.
+- Record the best score and show it on the Game Over and Victory screens.
+- Track a score for defeated enemies and display it during play and on the Game
+  Over screen.
+- Show a Victory screen when every enemy is defeated or the timer expires.
+- Delay the end screen buttons for a few seconds and include a **Play Again**
+  option that returns to character selection.
+- Add **How to Play** and **Credits** screens accessible from the main menu.
+- Provide a **Records** screen showing the best survival time and high score.
+- Sync these records across nodes so every client sees the latest leaderboard.
 - Implement melee attack, blocking, and parry mechanics.
 - Expand maps and experiment with more gravity zones.
 - Begin planning for local multiplayer support.
@@ -123,4 +136,3 @@ HoloLive Coliseum is a platform fighting game inspired by Super Smash Brothers, 
 - Prototype networking with a lightweight UDP manager. Extend it with broadcast
   discovery so clients can find local hosts automatically and add an online vs
   offline selection to the menus.
-

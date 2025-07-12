@@ -1,6 +1,9 @@
 import os
 import sys
 
+# NOTE: Removed git conflict markers from previous versions of this file to
+# avoid issues when merging.
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
 
