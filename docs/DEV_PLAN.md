@@ -1,9 +1,19 @@
+
 # Hololive Coliseum Development Plan
 
 ## Project Overview
 Hololive Coliseum is a platform fighting game inspired by Super Smash Brothers, featuring popular Hololive Vtubers as playable characters. The game will support single-player and multiplayer modes with both keyboard/mouse and console controller input.
 
 Additional networking concepts are described in `DEV_PLAN_NETWORK.md`.
+
+
+
+# HoloLive Coliseum Development Plan
+
+## Project Overview
+HoloLive Coliseum is a platform fighting game inspired by Super Smash Brothers, featuring popular Hololive Vtubers as playable characters. The game will support single-player and multiplayer modes with both keyboard/mouse and console controller input.
+
+
 
 ## Goals
 - Create a functional prototype with placeholder sprites and minimal features.
@@ -70,6 +80,7 @@ Additional networking concepts are described in `DEV_PLAN_NETWORK.md`.
 - Add Sakura Miko with a piercing beam special. *(Implemented)*
 - Polish melee attack, blocking, and parry mechanics.
  - Expand maps and experiment with more gravity zones. *(High-gravity zone implemented)*
+- Expand maps and experiment with more gravity zones.
 - Introduce spike traps and ice zones and teach AI to avoid them.
 - Refine existing local multiplayer features.
 - Flesh out menu flow for starting a game, adding chapter selection for story mode and graphical previews for characters and maps.
@@ -118,4 +129,10 @@ Additional networking concepts are described in `DEV_PLAN_NETWORK.md`.
 - Add **How to Play** and **Credits** screens accessible from the main menu.
 - Provide a **Records** screen showing the best survival time and high score.
 - Sync these records across nodes so every client sees the latest leaderboard.
-
+- Implement melee attack, blocking, and parry mechanics.
+- Expand maps and experiment with more gravity zones.
+- Begin planning for local multiplayer support.
+- Flesh out menu flow for starting a game, adding chapter selection for story mode and graphical previews for characters and maps.
+- Prototype networking with a lightweight UDP manager. Extend it with broadcast
+  discovery so clients can find local hosts automatically and add an online vs
+  offline selection to the menus.

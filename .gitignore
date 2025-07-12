@@ -17,3 +17,4 @@ Images/*.png
 sounds/*
 !sounds/.gitkeep
 test_nodes*/
+

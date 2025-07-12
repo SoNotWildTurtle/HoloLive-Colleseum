@@ -133,7 +133,8 @@ synchronization or discovery of other hosts.
 *IRyS implemented.*
 *Hakos Baelz implemented.*
 - Expand roster to **20** playable characters with placeholder specials.
- - Expand map mechanics with gravity zones, spike traps and ice patches. *(High-gravity zone added)*
+- Expand map mechanics with gravity zones, spike traps and ice patches.
+
 - Improve enemy AI to navigate around hazards intelligently.
 - Add AI-controlled opponents that use the shared `PlayerCharacter` base class.
 - Provide a difficulty selector so AI behavior can scale from Easy to Hard.
@@ -153,6 +154,7 @@ synchronization or discovery of other hosts.
   **Main Menu** buttons; Play Again returns to character selection.
 - Provide **How to Play** instructions and a **Credits** screen in the main menu.
 - Include a **Records** menu showing your best time and high score.
+- Polish menus with clearer prompts and optional controller hints.
 - Add grid-based map selection and a lobby screen listing joined players.
 - Continue adding tests for new mechanics as they appear.
 - Cover edge cases like zero-length projectile shots to prevent crashes.

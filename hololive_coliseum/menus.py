@@ -391,3 +391,4 @@ class MenuMixin:
             text = self.menu_font.render(line, True, color)
             self.screen.blit(text, text.get_rect(center=(self.width // 2, 120 + i * 30)))
         self._draw_border()
+

@@ -3,6 +3,8 @@
 import json
 import os
 import shutil
+import json
+import os
 from typing import Any
 
 SAVE_DIR = os.path.join(os.path.dirname(__file__), '..', 'SavedGames')
@@ -21,6 +23,7 @@ def load_settings() -> dict[str, Any]:
                 return json.load(f)
             except json.JSONDecodeError:
                 return {}
+            return json.load(f)
     return {}
 
 
@@ -28,6 +31,7 @@ def save_settings(data: dict[str, Any]) -> None:
     """Save settings to the `SavedGames` directory, creating it if missing."""
     path = _settings_file()
     os.makedirs(os.path.dirname(path), exist_ok=True)
+    path = _settings_file()
     with open(path, 'w', encoding='utf-8') as f:
         json.dump(data, f)
 
@@ -44,5 +48,9 @@ def wipe_saves() -> None:
                 shutil.rmtree(path)
             else:
                 os.remove(path)
+    for fname in os.listdir(SAVE_DIR):
+        path = os.path.join(SAVE_DIR, fname)
+        try:
+            os.remove(path)
         except OSError:
             pass

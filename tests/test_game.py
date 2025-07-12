@@ -9,6 +9,8 @@ def test_game_initialization(tmp_path, monkeypatch):
     monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
     from hololive_coliseum.game import Game
 
+    monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
+    from hololive_coliseum.game import Game
     game = Game()
     assert game.width == 800
     assert game.height == 600
@@ -18,6 +20,8 @@ def test_draw_menu_fills_cyan(tmp_path, monkeypatch):
     monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
     from hololive_coliseum.game import Game, MENU_BG_COLOR
 
+    monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
+    from hololive_coliseum.game import Game, MENU_BG_COLOR
     game = Game(width=100, height=100)
     game._draw_menu()
     assert game.screen.get_at((0, 0))[:3] == MENU_BG_COLOR
@@ -261,7 +265,6 @@ def test_escape_enters_pause(tmp_path, monkeypatch):
     game.run()
     assert game.state == "paused"
 
-
 def test_draw_lobby_menu(tmp_path, monkeypatch):
     monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
     from hololive_coliseum.game import Game, MENU_BG_COLOR
@@ -315,7 +318,6 @@ def test_start_and_stop_node(tmp_path, monkeypatch):
     game.stop_node()
     assert game.network_manager is None
     assert not game.node_hosting
-
 
 def test_game_over_state(tmp_path, monkeypatch):
     monkeypatch.setattr("hololive_coliseum.save_manager.SAVE_DIR", tmp_path)
@@ -485,3 +487,7 @@ def test_play_again_returns_to_char(tmp_path, monkeypatch):
     game.run()
     assert game.state == "char"
     pygame.quit()
+    monkeypatch.setattr('hololive_coliseum.save_manager.SAVE_DIR', tmp_path)
+    from hololive_coliseum.game import Game
+    game = Game()
+    assert game.mp_type_options == ["Offline", "Online"]

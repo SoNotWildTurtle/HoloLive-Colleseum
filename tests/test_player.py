@@ -6,12 +6,14 @@ os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
 import pygame
 
 from hololive_coliseum.player import PlayerCharacter
+from hololive_coliseum.player import Player
 
 
 def test_player_gravity():
     pygame.init()
     pygame.display.set_mode((1, 1))
     player = PlayerCharacter(0, 0)
+    player = Player(0, 0)
     player.update(ground_y=1000)
     assert player.velocity.y > 0
     pygame.quit()
@@ -37,6 +39,7 @@ def test_player_loads_image():
         os.path.dirname(__file__), "..", "Images", "Gawr_Gura_right.png"
     )
     player = PlayerCharacter(0, 0, image_path)
+    player = Player(0, 0, image_path)
     assert player.image.get_size() == (64, 64)
     pygame.quit()
 
@@ -45,6 +48,7 @@ def test_player_health_mana_usage():
     pygame.init()
     pygame.display.set_mode((1, 1))
     player = PlayerCharacter(0, 0)
+    player = Player(0, 0)
     player.take_damage(30)
     assert player.health == 70
     assert player.use_mana(20)
@@ -57,6 +61,7 @@ def test_draw_status_updates_surface():
     pygame.init()
     screen = pygame.display.set_mode((120, 50))
     player = PlayerCharacter(0, 0)
+    player = Player(0, 0)
     player.health = 50
     player.mana = 25
     player.draw_status(screen)
@@ -71,6 +76,7 @@ def test_melee_attack_and_block():
     pygame.init()
     pygame.display.set_mode((1, 1))
     player = PlayerCharacter(0, 0)
+    player = Player(0, 0)
     now = pygame.time.get_ticks()
     attack = player.melee_attack(now)
     assert attack is not None
@@ -87,6 +93,7 @@ def test_parry_prevents_damage():
     pygame.init()
     pygame.display.set_mode((1, 1))
     player = PlayerCharacter(0, 0)
+    player = Player(0, 0)
     now = pygame.time.get_ticks()
     assert player.parry(now)
     player.take_damage(50)

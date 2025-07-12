@@ -56,6 +56,7 @@
 - Added menu step to choose online or offline multiplayer.
 - Updated tests for discovery and menu options.
 
+
 ## 2025-07-16
 - Completed settings menu with dynamic volume display and a new key-binding
   editor.
@@ -333,3 +334,4 @@ another.  Paths are relative to the repository root.
 ## 2025-09-07
 - Added a **Records** screen on the main menu showing the best time and high score.
 - Planned to sync these records across nodes via the blockchain in future updates.
+
