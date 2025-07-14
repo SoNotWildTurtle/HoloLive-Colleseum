@@ -370,8 +370,8 @@ class MenuMixin:
         title = self.title_font.render("Credits", True, MENU_TEXT_COLOR)
         self.screen.blit(title, title.get_rect(center=(self.width // 2, 40)))
         credits = [
-            "Prototype by Hololive Fans", 
-            "Powered by Pygame", 
+            "Prototype by Hololive Fans",
+            "Powered by Pygame",
             "Back",
         ]
         for i, line in enumerate(credits):
