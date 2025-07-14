@@ -37,3 +37,11 @@ def test_anchor_points_present():
         assert anchor["color"] == color
         assert "vparam" in anchor
 
+
+def test_decompress_invalid_digest_returns_none():
+    msg = {"data": 123}
+    packet = compress_packet(msg)
+    tampered = bytearray(packet)
+    tampered[-1] ^= 0xFF  # flip last byte to corrupt payload
+    assert decompress_packet(bytes(tampered)) is None
+

@@ -1,8 +1,8 @@
 # Hololive Coliseum
 Prototype platform fighter featuring Hololive VTubers.
-All playable characters extend a common `PlayerCharacter` class providing
-movement, combat actions and resource tracking. The roster currently includes
-twenty-one selectable characters displayed in a grid on the character select screen.
+All playable characters extend a common `PlayerCharacter` class providing movement,
+combat actions and resource tracking. The roster currently includes twenty-one
+selectable characters displayed in a grid on the character select screen.
 The repository goals are detailed in [docs/GOALS.md](docs/GOALS.md).
 Story mode chapters are outlined in [docs/DEV_PLAN_STORY.md](docs/DEV_PLAN_STORY.md).
 Networking details live in [docs/DEV_PLAN_NETWORK.md](docs/DEV_PLAN_NETWORK.md).
@@ -177,7 +177,7 @@ Packets are compressed using a holographic lithography method. Each message is
 converted to a pointcloud and split into two base64 strings for transmission,
 then reconstructed on receipt to keep bandwidth low. The encoded pointcloud
 contains four color-coded anchor points -- black at `(0,0,0)`, red at `(1,0,0)`,
-cyan at `(1,0,1)` and white at `(1,1,1)` -- so the receiver can determine the
+white at `(1,1,1)` and cyan at `(1,0,1)` -- so the receiver can determine the
 pointcloud bounds before decoding. The encoded pointcloud
 includes a SHA256 digest so corrupted data is ignored. Packets may also be
 XOR-encrypted with a shared key for an additional layer of privacy.
