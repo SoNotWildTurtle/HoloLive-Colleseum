@@ -1,0 +1,28 @@
+# Character Abilities Plan
+
+Each Hololive member will gain a unique special ability. Planned concepts:
+
+- **Gawr Gura**: Exploding trident throw.
+- **Watson Amelia**: Time travel dash that slows opponents. *(Implemented)*
+- **Ninomae Ina'nis**: Tentacle grapple pulling enemies closer. *(Implemented)*
+- **Takanashi Kiara**: Fiery winged leap dealing damage on landing. *(Implemented)*
+- **Mori Calliope**: Soul scythe projectile that returns like a boomerang. *(Implemented)*
+- **Ceres Fauna**: Healing area that restores ally health. *(Implemented)*
+- **Ouro Kronii**: Time freeze parry with extended invulnerability. *(Implemented)*
+- **IRyS**: Crystal shield absorbing projectiles. *(Implemented)*
+- **Nanashi Mumei**: Flock summon that disrupts enemy movement using a `FlockProjectile` subclass. *(Implemented)*
+- **Hakos Baelz**: Randomized chaos effect altering gravity or controls. *(Implemented)*
+- **Shirakami Fubuki**: Freezing shard that slows enemies via a `FreezingProjectile` subclass. *(Implemented)*
+- **Sakura Miko**: Piercing beam that passes through enemies via a `PiercingProjectile` subclass. *(Implemented)*
+ - **Minato Aqua**: Water blast exploding on impact. *(Implemented)*
+ - **Usada Pekora**: Carrot bomb that explodes. *(Implemented)*
+ - **Houshou Marine**: Anchor boomerang returning to her. *(Implemented)*
+ - **Hoshimachi Suisei**: Piercing star projectile. *(Implemented)*
+ - **Nakiri Ayame**: Swift dash attack. *(Implemented)*
+ - **Shirogane Noel**: Ground slam explosion. *(Implemented)*
+ - **Shiranui Flare**: Flame burst projectile. *(Implemented)*
+
+ - **Oozora Subaru**: Stunning blast projectile. *(Implemented)*
+- **Tokino Sora**: Uplifting melody that damages foes in an area. *(Implemented)*
+
+These abilities will be implemented as subclasses of the base `PlayerCharacter` class.
